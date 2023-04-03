@@ -11,13 +11,14 @@ import ru.javarush.todolist.entity.Task;
 import java.util.List;
 
 @Repository
-public class TaskHibernateDao {
+public class TaskHibernateDao implements TaskDao {
     private final SessionFactory sessionFactory;
 
     public TaskHibernateDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
+    @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public List<Task> getAll(int offset, int limit) {
         String sql = "SELECT t FROM Task t";
@@ -28,6 +29,7 @@ public class TaskHibernateDao {
         return query.getResultList();
     }
 
+    @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public int getAllCount() {
         String sql = "SELECT COUNT(t) FROM Task t";
@@ -36,6 +38,7 @@ public class TaskHibernateDao {
         return Math.toIntExact(query.uniqueResult());
     }
 
+    @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public Task getById(int id) {
         String sql = "SELECT t FROM Task t WHERE id=:ID";
@@ -45,12 +48,14 @@ public class TaskHibernateDao {
         return query.uniqueResult();
     }
 
+    @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void saveOrUpdate(Task task) {
         Session session = sessionFactory.getCurrentSession();
         session.persist(task);
     }
 
+    @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void delete(Task task) {
         Session session = sessionFactory.getCurrentSession();

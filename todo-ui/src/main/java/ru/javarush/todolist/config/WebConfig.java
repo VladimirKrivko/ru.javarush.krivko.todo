@@ -5,15 +5,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
 @Configuration
-@Import({DaoConfig.class, ServiceConfig.class})
+@EnableWebMvc
+@Import({ServiceConfig.class})
 @ComponentScan("ru.javarush.todolist.controller")
 public class WebConfig implements WebMvcConfigurer {
     private final ApplicationContext applicationContext;
@@ -29,7 +32,6 @@ public class WebConfig implements WebMvcConfigurer {
         resolver.setPrefix("/html/");
         resolver.setSuffix(".html");
         resolver.setTemplateMode(TemplateMode.HTML);
-        resolver.setCacheable(false); // delete on completion
         return resolver;
     }
 
@@ -39,6 +41,14 @@ public class WebConfig implements WebMvcConfigurer {
         engine.setTemplateResolver(templateResolverBean());
         engine.setEnableSpringELCompiler(true);
         return engine;
+    }
+
+    @Bean
+    public ThymeleafViewResolver viewResolver() {
+        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+        resolver.setTemplateEngine(templateEngineBean());
+        resolver.setCharacterEncoding("UTF-8");
+        return resolver;
     }
 
     @Override

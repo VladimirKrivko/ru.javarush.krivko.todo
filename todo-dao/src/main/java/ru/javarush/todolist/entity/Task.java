@@ -43,13 +43,4 @@ public class Task {
     public void setStatus(Status status) {
         this.status = status;
     }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                '}';
-    }
 }
