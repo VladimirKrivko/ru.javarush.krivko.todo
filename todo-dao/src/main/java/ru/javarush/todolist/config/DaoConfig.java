@@ -43,7 +43,8 @@ public class DaoConfig {
         dataSource.setJdbcUrl(environment.getProperty("database.url"));
         dataSource.setUsername(environment.getProperty("database.username"));
         dataSource.setPassword(environment.getProperty("database.password"));
-        dataSource.setMaximumPoolSize(Integer.parseInt(Objects.requireNonNull(environment.getProperty("database.maximum_pull_size"))));
+        int availableCoreProcessors = Runtime.getRuntime().availableProcessors();
+        dataSource.setMaximumPoolSize(availableCoreProcessors < 2 ? availableCoreProcessors : availableCoreProcessors - 1);
         return dataSource;
     }
 

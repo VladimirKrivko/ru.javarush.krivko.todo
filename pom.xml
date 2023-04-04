@@ -34,12 +34,12 @@
             <dependency>
                 <groupId>ru.javarush.todolist</groupId>
                 <artifactId>todo-dao</artifactId>
-                <version>${parent.version}</version>
+                <version>${project.parent.version}</version>
             </dependency>
             <dependency>
                 <groupId>ru.javarush.todolist</groupId>
                 <artifactId>todo-service</artifactId>
-                <version>${parent.version}</version>
+                <version>${project.parent.version}</version>
             </dependency>
 
             <dependency>
