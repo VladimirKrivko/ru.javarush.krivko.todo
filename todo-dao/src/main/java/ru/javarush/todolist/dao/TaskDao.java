@@ -3,6 +3,7 @@ package ru.javarush.todolist.dao;
 import ru.javarush.todolist.entity.Task;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TaskDao {
 
@@ -10,7 +11,7 @@ public interface TaskDao {
 
     int getAllCount();
 
-    Task getById(int id);
+    Optional<Task> getById(int id);
 
     void saveOrUpdate(Task task);
 

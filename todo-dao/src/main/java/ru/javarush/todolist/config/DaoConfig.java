@@ -2,11 +2,11 @@ package ru.javarush.todolist.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -21,11 +21,21 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ComponentScan("ru.javarush.todolist")
 public class DaoConfig {
-    private final Environment environment;
 
-    public DaoConfig(Environment environment) {
-        this.environment = environment;
-    }
+    @Value("${database.driver}")
+    private String dbDriver;
+    @Value("${database.url}")
+    private String dbUrl;
+    @Value("${database.username}")
+    private String dbUsername;
+    @Value("${database.password}")
+    private String dbPassword;
+    @Value("${hibernate.dialect}")
+    private String hibernateDialect;
+    @Value("${hibernate.show_sql}")
+    private String hibernateShowSql;
+    @Value("${hibernate.hbm2ddl.auto}")
+    private String hibernateHbm2ddlAuto;
 
     @Bean
     public LocalSessionFactoryBean sessionFactoryBean() {
@@ -39,10 +49,11 @@ public class DaoConfig {
     @Bean
     public DataSource dataSourceBean() {
         HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setDriverClassName(Objects.requireNonNull(environment.getProperty("database.driver")));
-        dataSource.setJdbcUrl(environment.getProperty("database.url"));
-        dataSource.setUsername(environment.getProperty("database.username"));
-        dataSource.setPassword(environment.getProperty("database.password"));
+        dataSource.setDriverClassName(Objects.requireNonNull(dbDriver));
+        dataSource.setJdbcUrl(dbUrl);
+        dataSource.setUsername(dbUsername);
+        dataSource.setPassword(dbPassword);
+
         int availableCoreProcessors = Runtime.getRuntime().availableProcessors();
         dataSource.setMaximumPoolSize(availableCoreProcessors < 2 ? availableCoreProcessors : availableCoreProcessors - 1);
         return dataSource;
@@ -50,9 +61,9 @@ public class DaoConfig {
 
     public Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect", environment.getProperty("hibernate.dialect"));
-        properties.put("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
-        properties.put("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
+        properties.put("hibernate.dialect", hibernateDialect);
+        properties.put("hibernate.show_sql", hibernateShowSql);
+        properties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddlAuto);
         return properties;
     }
 

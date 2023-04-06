@@ -50,7 +50,7 @@
 
         <h2>
             <a th:each="pageNumber : ${page_numbers}" class='btn btn-warning btn-xs button_page'
-               th:href="@{/(page=${pageNumber}, limit=10)}" th:text="${pageNumber}"
+               th:href="@{/tasks/(page=${pageNumber}, limit=10)}" th:text="${pageNumber}"
                th:classappend="${pageNumber == current_page? 'active_page' : ''}">
                 <span class="glyphicon glyphicon-edit"></span>
                 Edit

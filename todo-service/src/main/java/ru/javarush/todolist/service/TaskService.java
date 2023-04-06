@@ -6,10 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javarush.todolist.dao.TaskDao;
 import ru.javarush.todolist.entity.Status;
 import ru.javarush.todolist.entity.Task;
+import ru.javarush.todolist.exception.TaskNotFoundException;
 
 import java.util.List;
-
-import static java.util.Objects.isNull;
 
 @Service
 public class TaskService {
@@ -30,10 +29,8 @@ public class TaskService {
 
     @Transactional
     public Task edit(int id, String description, Status status) {
-        Task task = taskDao.getById(id);
-        if (isNull(task)) {
-            throw new RuntimeException("Not found");
-        }
+        Task task = taskDao.getById(id)
+                .orElseThrow(() -> new TaskNotFoundException("task with id=%d not found".formatted(id)));
         task.setDescription(description);
         task.setStatus(status);
         taskDao.saveOrUpdate(task);
@@ -50,10 +47,8 @@ public class TaskService {
 
     @Transactional
     public void delete(int id) {
-        Task task = taskDao.getById(id);
-        if (isNull(task)) {
-            throw new RuntimeException("Not found");
-        }
+        Task task = taskDao.getById(id)
+                .orElseThrow(() -> new TaskNotFoundException("task with id=%d not found".formatted(id)));
         taskDao.delete(task);
     }
 }

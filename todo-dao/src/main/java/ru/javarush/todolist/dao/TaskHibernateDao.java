@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javarush.todolist.entity.Task;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class TaskHibernateDao implements TaskDao {
@@ -19,7 +20,7 @@ public class TaskHibernateDao implements TaskDao {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public List<Task> getAll(int offset, int limit) {
         String sql = "SELECT t FROM Task t";
         Session session = sessionFactory.getCurrentSession();
@@ -30,7 +31,7 @@ public class TaskHibernateDao implements TaskDao {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public int getAllCount() {
         String sql = "SELECT COUNT(t) FROM Task t";
         Session session = sessionFactory.getCurrentSession();
@@ -39,13 +40,13 @@ public class TaskHibernateDao implements TaskDao {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
-    public Task getById(int id) {
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
+    public Optional<Task> getById(int id) {
         String sql = "SELECT t FROM Task t WHERE id=:ID";
         Session session = sessionFactory.getCurrentSession();
         Query<Task> query = session.createQuery(sql, Task.class);
         query.setParameter("ID", id);
-        return query.uniqueResult();
+        return Optional.of(query.uniqueResult());
     }
 
     @Override

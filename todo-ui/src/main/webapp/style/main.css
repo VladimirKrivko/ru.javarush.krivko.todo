@@ -18,3 +18,7 @@
     padding: 20px;
     font-size: large;
 }
+
+.error {
+    color: red;
+}
