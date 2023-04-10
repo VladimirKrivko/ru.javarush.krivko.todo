@@ -1,10 +1,17 @@
 package ru.javarush.todolist.dto;
 
-import ru.javarush.todolist.entity.Status;
-
-public class TaskInfo {
+public class TaskDto {
+    private Integer id;
     private String description;
-    private Status status;
+    private String status;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getDescription() {
         return description;
@@ -14,11 +21,11 @@ public class TaskInfo {
         this.description = description;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

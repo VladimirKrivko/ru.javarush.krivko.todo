@@ -9,6 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "task", schema = "todo")
 public class Task {
@@ -42,5 +44,28 @@ public class Task {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Task task)) return false;
+        return getId().equals(task.getId())
+                && getDescription().equals(task.getDescription())
+                && getStatus() == task.getStatus();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getDescription(), getStatus());
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                '}';
     }
 }

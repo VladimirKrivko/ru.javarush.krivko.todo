@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.javarush.todolist.dto.TaskInfo;
-import ru.javarush.todolist.entity.Task;
+import ru.javarush.todolist.dto.TaskDto;
 import ru.javarush.todolist.exception.IncorrectAddressBarParameterException;
 import ru.javarush.todolist.exception.TaskIdInvalidException;
 import ru.javarush.todolist.service.TaskService;
@@ -48,7 +47,7 @@ public class TaskController {
 
             int pageInt = Integer.parseInt(page);
             int limitInt = Integer.parseInt(limit);
-            List<Task> tasks = taskService.getAll((pageInt - 1) * limitInt, limitInt);
+            List<TaskDto> tasks = taskService.getAll((pageInt - 1) * limitInt, limitInt);
             model.addAttribute("tasks", tasks);
             model.addAttribute("current_page", pageInt);
 
@@ -68,7 +67,7 @@ public class TaskController {
     @PostMapping(value = "/{id}", consumes = {"*/*"})
     public String edit(Model model,
                      @PathVariable Integer id,
-                     @RequestBody TaskInfo info) {
+                     @RequestBody TaskDto info) {
         try {
             if (isNull(id) || id <= 0) {
                 throw new TaskIdInvalidException("Task with id=%d does not exist".formatted(id));
@@ -84,7 +83,7 @@ public class TaskController {
 
     @PostMapping(value = "/", consumes = {"*/*"})
     public void add(Model model,
-                    @RequestBody TaskInfo info) {
+                    @RequestBody TaskDto info) {
         if (info.getDescription() != null && !info.getDescription().isEmpty()) {
             taskService.create(info.getDescription(), info.getStatus());
         }
