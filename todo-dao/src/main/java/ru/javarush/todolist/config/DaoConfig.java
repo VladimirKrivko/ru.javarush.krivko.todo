@@ -55,7 +55,7 @@ public class DaoConfig {
         dataSource.setPassword(dbPassword);
 
         int availableCoreProcessors = Runtime.getRuntime().availableProcessors();
-        dataSource.setMaximumPoolSize(availableCoreProcessors < 2 ? availableCoreProcessors : availableCoreProcessors - 1);
+        dataSource.setMaximumPoolSize(availableCoreProcessors * 2 + 1);
         return dataSource;
     }
 
