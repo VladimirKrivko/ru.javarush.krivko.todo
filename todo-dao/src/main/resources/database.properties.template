@@ -1,0 +1,8 @@
+database.driver=?
+database.url=?
+database.username=?
+database.password=?
+
+hibernate.dialect=?
+hibernate.show_sql=?
+hibernate.hbm2ddl.auto=?
