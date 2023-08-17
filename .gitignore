@@ -4,3 +4,6 @@ target/
 *.iws
 *.iml
 *.ipr
+todo-dao/src/main/resources/database.properties
+docker-compose.yaml
+Dockerfile
